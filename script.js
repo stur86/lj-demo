@@ -204,13 +204,17 @@ LJDemo.prototype = {
 
 window.onload = function() {
     var demo = new LJDemo();
-    var gui = new dat.GUI();
+    var gui = new dat.GUI({ width: 300 });
 
     gui.add(demo, 'num', 10, 200).step(1).onFinishChange(function(value) {
         demo.initialise();
-    });;
-    gui.add(demo, 'R0', 1, 10).onFinishChange(function(value) {demo.recalcAB()});
-    gui.add(demo, 'DV', 0.2, 3).onFinishChange(function(value) {demo.recalcAB()});
-    gui.add(demo, 'T', 0.0001, 1);
-    gui.add(demo, 'tdamp', 0, 5);
+    }).name('Particle number');
+
+    var potgui = gui.addFolder('Force field');
+    potgui.add(demo, 'R0', 1, 10).onFinishChange(function(value) {demo.recalcAB()}).name('Radius of attraction');
+    potgui.add(demo, 'DV', 0.2, 3).onFinishChange(function(value) {demo.recalcAB()}).name('Strength');
+    
+    var tgui = gui.addFolder('Thermostat')
+    tgui.add(demo, 'T', 0.0001, 1).name('Temperature');
+    tgui.add(demo, 'tdamp', 0, 5).name('Acclimatation');
 };
